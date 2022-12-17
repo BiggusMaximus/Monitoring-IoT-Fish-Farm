@@ -4,9 +4,6 @@ import numpy as np
 
 views = Blueprint('views', __name__)
 
-def play_sound():
-    
-
 def gen_frames():
     global camera
     camera = cv2.VideoCapture(0)
@@ -34,7 +31,6 @@ def video_feed():
 
 @views.route('/update', methods=["GET"])
 def update():
-    print('kontol')
     ph = np.random.rand()
     tds = np.random.rand()
     temp = np.random.rand()
