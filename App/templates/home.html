@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<script>
+    function playSound() {
+        const audio = new Audio('static/sound.mp3');
+        audio.play();
+    }
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+
+    var ph = 0;
+    var tds = 0;
+    var temp = 0;
+
+    (function(){
+        $.getJSON(
+            $SCRIPT_ROOT+"/update", // Your AJAX route here
+            function(data) {
+                $('#ph').text(data[0].ph)
+                ph = data[0].ph
+                $('#tds').text(data[0].tds)
+                tds = data[0].tds
+                $('#temp').text(data[0].temp)
+                temp = data[0].temp
+            }
+        );
+        setTimeout(arguments.callee, 2000);
+        if (ph > 0.8){
+            playSound();
+        }
+    })();
+</script>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md">
+            <div class="card">
+                <div class="card-header" align="center">
+                    <h3>Fire Detection</h3> 
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <!-- <img src="static/upn.jpg" class="img-fluid d-flex ml-auto mr-auto width: 100%"> -->
+                            <img src={{url_for('views.stream')}} class="img-fluid d-flex ml-auto mr-auto width: 100%">
+                        </div>
+                        <div class="col-md-3">
+                            <div class="row">
+                                <div class="card-body">
+                                    <h5 class="card-title">pH</h5>
+                                    <p class="card-text" id="ph">
+                                        0
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="card-body">
+                                    <h5 class="card-title">TDS</h5>
+                                        <p class="card-text" id="tds">
+                                            0
+                                        </p>
+                                  </div>
+                            </div>
+                            <div class="row">
+                                <div class="card-body">
+                                    <h5 class="card-title">Temperature</h5>
+                                        <p class="card-text" id="temp">
+                                            0        
+                                        </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
