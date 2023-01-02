@@ -1,26 +1,28 @@
 #include <Arduino.h>
 
-void read_ph(int pin)
+void read_ph_analog(int pin)
 {
     uint16_t val = analogRead(pin);
     Serial.println(val);
 }
 
-void read_ph_avg(int pin)
+float read_ph_analog_avg(int pin, float sample)
 {
     float val = 0;
-    for (uint32_t i = 0; i < 1000; i++)
+    for (uint32_t i = 0; i < sample; i++)
     {
         val += analogRead(pin);
         delay(10);
     }
-    val = val / 1000.0;
-    Serial.println(val);
+    val = val / sample;
+    return val;
 }
 
-void ph_voltage(int pin)
+void ph_voltage(float val)
 {
-    uint16_t val = analogRead(pin);
-    float voltage = (val / 1023.0) * 5.0;
-    Serial.println(voltage);
+    for (uint32_t i = 0; i < 1000; i++)
+    {
+        float voltage = 23.190407296245567 - (0.031055233908592963 * val);
+        Serial.println(voltage);
+    }
 }

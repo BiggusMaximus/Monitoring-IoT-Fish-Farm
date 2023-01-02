@@ -7,9 +7,9 @@ void setup()
 {
     Serial.begin(9600);
     pinMode(pH, INPUT);
-    read_ph_avg(pH);
 }
 
 void loop()
 {
+    ph_voltage(read_ph_analog_avg(pH, 10.0));
 }
